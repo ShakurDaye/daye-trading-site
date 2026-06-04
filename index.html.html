@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paper Trading — DAYE Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --purple: #7c3aed;
+    --purple-light: #a855f7;
+    --purple-dim: #4c1d95;
+    --purple-glow: rgba(124,58,237,0.3);
+    --bg-deep: #07050f;
+    --bg-dark: #0a0814;
+    --bg-card: #0f0c1a;
+    --bg-card2: #130f20;
+    --border: rgba(124,58,237,0.25);
+    --border-bright: rgba(124,58,237,0.5);
+    --text-primary: #ede9fe;
+    --text-secondary: #a89bc8;
+    --text-muted: #5a4f72;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--purple-dim); border-radius: 3px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(7,5,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700; font-size: 13px;
+    color: var(--purple-light);
+    letter-spacing: 1px;
+    box-shadow: 0 0 12px var(--purple-glow);
+  }
+  .logo-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700; font-size: 16px;
+    color: var(--text-primary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .logo-text span { color: var(--purple-light); }
+  .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--purple-light); background: rgba(124,58,237,0.08); }
+  .nav-links a.active { color: var(--purple-light); background: rgba(124,58,237,0.12); }
+  .nav-toggle { display: none; background: none; border: none; color: var(--text-secondary); font-size: 22px; cursor: pointer; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(124,58,237,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 700px; margin: 0 auto;
+  }
+  .coming-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid var(--border-bright);
+    color: var(--purple-light);
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 6px 20px; border-radius: 100px;
+    margin-bottom: 2rem;
+    animation: pulse-border 3s ease-in-out infinite;
+  }
+  @keyframes pulse-border {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(124,58,237,0); }
+  }
+  .coming-badge::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--purple-light);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .hero-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple-light), transparent);
+  }
+  .hero-chart-bg {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+    opacity: 0.12;
+  }
+  .hero-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 36px; font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2; margin-bottom: 1rem;
+    letter-spacing: 1px;
+  }
+  .hero-title span { color: var(--purple-light); }
+  .hero-sub {
+    font-size: 15px; color: var(--text-secondary);
+    line-height: 1.7; margin-bottom: 1.5rem;
+    max-width: 500px; margin-left: auto; margin-right: auto;
+  }
+  .info-box {
+    background: rgba(124,58,237,0.07);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    margin-bottom: 2rem;
+    font-size: 14px; color: var(--text-secondary); line-height: 1.7;
+  }
+  .info-box strong { color: var(--text-primary); }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--purple);
+    color: #fff;
+    font-size: 14px; font-weight: 500;
+    padding: 13px 32px; border-radius: 8px;
+    text-decoration: none; border: none; cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+  }
+  .btn-primary:hover {
+    background: #6d28d9;
+    box-shadow: 0 4px 28px rgba(124,58,237,0.55);
+    transform: translateY(-1px);
+  }
+  .btn-primary svg { width: 16px; height: 16px; }
+
+  /* ── SECTIONS ── */
+  .section { max-width: 960px; margin: 0 auto; padding: 4rem 2rem; }
+  .section-eyebrow {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--purple); font-weight: 500; margin-bottom: 0.5rem;
+  }
+  .section-heading {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 24px; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── WHY CARDS ── */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+  .card-icon {
+    width: 44px; height: 44px;
+    background: rgba(124,58,237,0.1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--purple-light);
+  }
+  .card-icon svg { width: 22px; height: 22px; }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .card-text { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+  /* ── RECOMMEND ── */
+  .recommend-card {
+    background: var(--bg-card2);
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    padding: 2.5rem;
+    position: relative; overflow: hidden;
+  }
+  .recommend-card::after {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .rec-badge {
+    display: inline-block;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid var(--border-bright);
+    color: var(--purple-light);
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 100px;
+    margin-bottom: 1rem;
+  }
+  .rec-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 0.75rem;
+  }
+  .rec-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 1.5rem; }
+
+  /* ── FUTURE FEATURES ── */
+  .future-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .future-item {
+    background: var(--bg-card);
+    border: 1px solid rgba(124,58,237,0.12);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .future-item:hover { border-color: var(--border); color: var(--text-secondary); }
+  .future-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple-dim); flex-shrink: 0; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    max-width: 960px; margin: 0 auto;
+    padding: 1.5rem 2rem 3rem;
+    font-size: 12px; color: var(--text-muted); line-height: 1.7;
+  }
+  .disclaimer strong { color: #3d3350; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem;
+      gap: 4px;
+    }
+    .nav-toggle { display: block; }
+    .hero { padding: 3rem 1rem 2.5rem; }
+    .hero-card { padding: 2rem 1.25rem; }
+    .hero-title { font-size: 26px; }
+    .section { padding: 3rem 1rem; }
+    .recommend-card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">DT</div>
+    <span class="logo-text"><span>DAYE</span> Trading</span>
+  </a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+  <ul class="nav-links">
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="#">Curriculum</a></li>
+    <li><a href="#">Lessons</a></li>
+    <li><a href="#">Journal</a></li>
+    <li><a href="#" class="active">Paper Trading</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Account</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="coming-badge">Coming Soon</div>
+    <div class="hero-card">
+      <svg class="hero-chart-bg" viewBox="0 0 700 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="0,75 60,68 120,72 180,52 240,58 300,38 360,44 420,25 480,30 540,14 600,18 660,6 700,9" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+        <polygon points="0,75 60,68 120,72 180,52 240,58 300,38 360,44 420,25 480,30 540,14 600,18 660,6 700,9 700,80 0,80" fill="#3b0764" opacity="0.5"/>
+      </svg>
+      <h1 class="hero-title">Paper Trading Practice<br/><span>— Coming Soon</span></h1>
+      <p class="hero-sub">We're working on building a more accurate paper trading experience for DAYE Trading students.</p>
+      <div class="info-box">
+        <strong>While this feature is being researched and developed,</strong> we recommend students use TradingView Paper Trading to practice without risking real money.
+      </div>
+      <a href="https://www.tradingview.com/paper-trading/" target="_blank" rel="noopener" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Practice on TradingView
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- WHY PAPER TRADING -->
+<div class="section">
+  <p class="section-eyebrow">Why it matters</p>
+  <h2 class="section-heading">Why paper trading is essential</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="card-title">Practice without risking real money</div>
+      <div class="card-text">Build your skills and confidence in a zero-risk environment before putting real capital on the line.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="card-title">Build discipline before going live</div>
+      <div class="card-text">Develop consistent habits, follow your trading rules, and build mental discipline before using real money.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div class="card-title">Test strategies and journal results</div>
+      <div class="card-text">Try your strategy, track entries and exits, and refine your edge through consistent journaling.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- RECOMMENDED TOOL -->
+<div class="section">
+  <p class="section-eyebrow">Recommended tool</p>
+  <div class="recommend-card">
+    <div class="rec-badge">Recommended for now</div>
+    <div class="rec-title">TradingView Paper Trading</div>
+    <p class="rec-text">TradingView offers a full-featured paper trading simulator with live charts, watchlists, and realistic order simulation. Use it to practice chart reading, entries, exits, and risk management — all without real money.</p>
+    <a href="https://www.tradingview.com/paper-trading/" target="_blank" rel="noopener" class="btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Practice on TradingView
+    </a>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- FUTURE FEATURES -->
+<div class="section">
+  <p class="section-eyebrow">What's ahead</p>
+  <h2 class="section-heading">Future DAYE Trading paper trading features</h2>
+  <div class="future-grid">
+    <div class="future-item"><span class="future-dot"></span>Simulated trades</div>
+    <div class="future-item"><span class="future-dot"></span>Watchlist</div>
+    <div class="future-item"><span class="future-dot"></span>Practice trade history</div>
+    <div class="future-item"><span class="future-dot"></span>Risk calculator</div>
+    <div class="future-item"><span class="future-dot"></span>Position size calculator</div>
+    <div class="future-item"><span class="future-dot"></span>Strategy checklist</div>
+    <div class="future-item"><span class="future-dot"></span>Trading journal connection</div>
+    <div class="future-item"><span class="future-dot"></span>AI trade review assistant</div>
+    <div class="future-item"><span class="future-dot"></span>Progress tracking</div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <strong>Disclaimer:</strong> DAYE Trading is for educational purposes only. This is not financial advice. Paper trading does not guarantee success in live markets. All trading involves risk. Past performance is not indicative of future results.
+</div>
+
+</body>
+</html>
