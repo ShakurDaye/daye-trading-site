@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paper Trading — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.hero { position:relative; padding:5rem 2rem 4rem; text-align:center; overflow:hidden; }
+.hero-glow { position:absolute; top:-80px; left:50%; transform:translateX(-50%); width:600px; height:400px; background:radial-gradient(ellipse, rgba(124,58,237,0.14) 0%, transparent 70%); pointer-events:none; }
+.hero-card { background:var(--bg-card); border:1px solid var(--border-bright); border-radius:20px; max-width:680px; margin:0 auto; padding:3rem 2.5rem; position:relative; overflow:hidden; }
+.hero-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--purple-light),transparent); }
+.hero-chart { position:absolute; bottom:0; left:0; right:0; height:80px; opacity:.12; }
+.coming-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(124,58,237,0.12); border:1px solid var(--border-bright); color:var(--purple-light); font-size:11px; font-weight:500; letter-spacing:3px; text-transform:uppercase; padding:6px 20px; border-radius:100px; margin-bottom:1.5rem; animation:pulse-b 3s ease-in-out infinite; }
+.coming-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--purple-light); animation:blink 1.5s ease-in-out infinite; }
+@keyframes pulse-b { 0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.3)} 50%{box-shadow:0 0 0 6px rgba(124,58,237,0)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.info-box { background:rgba(124,58,237,.07); border-left:3px solid var(--purple); border-radius:0 10px 10px 0; padding:1rem 1.25rem; text-align:left; margin-bottom:2rem; font-size:14px; color:var(--text-secondary); line-height:1.7; }
+.future-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+.future-item { background:var(--bg-card); border:1px solid rgba(124,58,237,.12); border-radius:8px; padding:.75rem 1rem; display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); transition:all .2s; }
+.future-item:hover { border-color:var(--border); color:var(--text-secondary); }
+.future-dot { width:6px; height:6px; border-radius:50%; background:var(--purple-dim); flex-shrink:0; }
+.rec-card { background:var(--bg-card2); border:1px solid var(--border-bright); border-radius:16px; padding:2.5rem; position:relative; overflow:hidden; }
+.rec-card::after { content:''; position:absolute; top:0; right:0; width:200px; height:200px; background:radial-gradient(circle, rgba(124,58,237,.1) 0%, transparent 70%); pointer-events:none; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><div class="logo-mark">DT</div><span class="logo-text"><span>DAYE</span> Trading</span></a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="curriculum.html">Curriculum</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="paper-trading.html" class="active">Paper Trading</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions"><button class="theme-toggle" id="themeToggle">☀️</button></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div style="position:relative;">
+    <div class="coming-badge">Coming Soon</div>
+    <div class="hero-card">
+      <svg class="hero-chart" viewBox="0 0 700 80" preserveAspectRatio="none"><polyline points="0,75 60,68 120,72 180,52 240,58 300,38 360,44 420,25 480,30 540,14 600,18 660,6 700,9" fill="none" stroke="#7c3aed" stroke-width="1.5"/><polygon points="0,75 60,68 120,72 180,52 240,58 300,38 360,44 420,25 480,30 540,14 600,18 660,6 700,9 700,80 0,80" fill="#3b0764" opacity="0.5"/></svg>
+      <h1 style="margin-bottom:.75rem;">Paper Trading Practice<br/><span style="color:var(--purple-light);">— Coming Soon</span></h1>
+      <p style="color:var(--text-secondary);font-size:15px;margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7;">We're working on building a more accurate paper trading experience for DAYE Trading students.</p>
+      <div class="info-box"><strong style="color:var(--text-primary);">While this feature is being researched and developed,</strong> we recommend students use TradingView Paper Trading to practice without risking real money.</div>
+      <a href="https://www.tradingview.com/paper-trading/" target="_blank" rel="noopener" class="btn btn-primary btn-lg">📈 Practice on TradingView</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<div class="section">
+  <p class="section-eyebrow">Why it matters</p>
+  <h2 class="section-title">Why paper trading is essential</h2>
+  <div class="grid-3 mb-4">
+    <div class="card">
+      <div style="font-size:1.8rem;margin-bottom:.75rem;">🛡️</div>
+      <h4 style="margin-bottom:.5rem;">Practice without real risk</h4>
+      <p style="font-size:13px;">Build skills and confidence in a zero-risk environment before putting real capital on the line.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:1.8rem;margin-bottom:.75rem;">🧠</div>
+      <h4 style="margin-bottom:.5rem;">Build discipline first</h4>
+      <p style="font-size:13px;">Develop consistent habits and mental discipline before using real money.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:1.8rem;margin-bottom:.75rem;">📝</div>
+      <h4 style="margin-bottom:.5rem;">Test strategies & journal</h4>
+      <p style="font-size:13px;">Try your strategy, track entries and exits, and refine your edge through journaling.</p>
+    </div>
+  </div>
+
+  <p class="section-eyebrow">Recommended tool</p>
+  <div class="rec-card mb-4">
+    <div class="badge badge-purple" style="margin-bottom:.75rem;">Recommended for now</div>
+    <h2 style="margin-bottom:.75rem;">TradingView Paper Trading</h2>
+    <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;max-width:520px;margin-bottom:1.5rem;">TradingView offers a full-featured paper trading simulator with live charts, watchlists, and realistic order simulation. Practice chart reading, entries, exits, and risk management — all without real money.</p>
+    <a href="https://www.tradingview.com/paper-trading/" target="_blank" rel="noopener" class="btn btn-primary">↗ Practice on TradingView</a>
+  </div>
+
+  <p class="section-eyebrow">What's ahead</p>
+  <h2 class="section-title">Future DAYE Trading features</h2>
+  <div class="future-grid mb-4">
+    <div class="future-item"><span class="future-dot"></span>Simulated trades</div>
+    <div class="future-item"><span class="future-dot"></span>Watchlist</div>
+    <div class="future-item"><span class="future-dot"></span>Practice trade history</div>
+    <div class="future-item"><span class="future-dot"></span>Risk calculator</div>
+    <div class="future-item"><span class="future-dot"></span>Position size calculator</div>
+    <div class="future-item"><span class="future-dot"></span>Strategy checklist</div>
+    <div class="future-item"><span class="future-dot"></span>Trading journal connection</div>
+    <div class="future-item"><span class="future-dot"></span>AI trade review assistant</div>
+    <div class="future-item"><span class="future-dot"></span>Progress tracking</div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> DAYE Trading is for educational purposes only. This is not financial advice. Paper trading does not guarantee success in live markets. All trading involves risk.
+  </div>
+</div>
+
+<footer><p>© 2026 DAYE Trading. Educational purposes only.</p></footer>
+<script src="js/app.js"></script>
+</body>
+</html>

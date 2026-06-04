@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Resources — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.res-hero { background:var(--bg-dark); border-bottom:1px solid var(--border); padding:2.5rem 2rem; text-align:center; }
+.res-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:1.5rem; transition:all 0.2s; display:flex; flex-direction:column; gap:10px; }
+.res-card:hover { border-color:var(--border-bright); transform:translateY(-2px); }
+.res-type { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--purple); font-weight:500; }
+.res-title { font-size:15px; font-weight:500; color:var(--text-primary); }
+.res-desc { font-size:13px; color:var(--text-muted); line-height:1.6; flex:1; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><div class="logo-mark">DT</div><span class="logo-text"><span>DAYE</span> Trading</span></a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="curriculum.html">Curriculum</a></li>
+    <li><a href="resources.html" class="active">Resources</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions"><button class="theme-toggle" id="themeToggle">☀️</button></div>
+</nav>
+
+<div class="res-hero">
+  <p class="section-eyebrow">Curated for beginners</p>
+  <h1>Resources 🔗</h1>
+  <p style="color:var(--text-secondary);margin-top:0.5rem;">Tools, platforms, and references to support your trading education.</p>
+</div>
+
+<div class="section">
+  <div class="mb-4">
+    <p class="section-eyebrow">Practice platforms</p>
+    <h2 class="section-title mb-3">Paper Trading & Charts</h2>
+    <div class="grid-3">
+      <div class="res-card">
+        <div class="res-type">Chart Platform</div>
+        <div class="res-title">TradingView</div>
+        <div class="res-desc">The best free charting tool and paper trading platform. Practice reading charts and placing simulated trades.</div>
+        <a href="https://www.tradingview.com/paper-trading/" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open TradingView ↗</a>
+      </div>
+      <div class="res-card">
+        <div class="res-type">Broker Simulator</div>
+        <div class="res-title">Thinkorswim (Paper Money)</div>
+        <div class="res-desc">TD Ameritrade's professional trading platform with a free paper trading mode. Great for learning order types.</div>
+        <a href="https://www.tdameritrade.com/tools-and-platforms/thinkorswim.html" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Learn More ↗</a>
+      </div>
+      <div class="res-card">
+        <div class="res-type">Screener</div>
+        <div class="res-title">Finviz Stock Screener</div>
+        <div class="res-desc">A powerful free stock screener to find stocks based on technical and fundamental criteria.</div>
+        <a href="https://finviz.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open Finviz ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <p class="section-eyebrow">News & market data</p>
+    <h2 class="section-title mb-3">Stay Informed</h2>
+    <div class="grid-3">
+      <div class="res-card">
+        <div class="res-type">News</div>
+        <div class="res-title">Benzinga</div>
+        <div class="res-desc">Fast financial news and market moving catalysts. Essential for understanding why stocks move.</div>
+        <a href="https://www.benzinga.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Visit Benzinga ↗</a>
+      </div>
+      <div class="res-card">
+        <div class="res-type">News</div>
+        <div class="res-title">MarketWatch</div>
+        <div class="res-desc">Comprehensive market news, stock quotes, and financial information for traders and investors.</div>
+        <a href="https://www.marketwatch.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Visit MarketWatch ↗</a>
+      </div>
+      <div class="res-card">
+        <div class="res-type">Market Data</div>
+        <div class="res-title">Yahoo Finance</div>
+        <div class="res-desc">Free stock quotes, charts, financials, and earnings calendars. Great for fundamental research.</div>
+        <a href="https://finance.yahoo.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Visit Yahoo Finance ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <p class="section-eyebrow">Learning</p>
+    <h2 class="section-title mb-3">Continue Learning</h2>
+    <div class="grid-3">
+      <div class="res-card">
+        <div class="res-type">SEC Resource</div>
+        <div class="res-title">Investor.gov</div>
+        <div class="res-desc">Free educational resources from the U.S. Securities and Exchange Commission for new investors.</div>
+        <a href="https://www.investor.gov" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Visit ↗</a>
+      </div>
+      <div class="res-card">
+        <div class="res-type">Book</div>
+        <div class="res-title">How to Day Trade for a Living</div>
+        <div class="res-desc">By Andrew Aziz. One of the most popular books for beginner day traders — covers strategies and risk management.</div>
+        <a href="https://www.amazon.com/s?k=how+to+day+trade+for+a+living+andrew+aziz" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Find on Amazon ↗</a>
+      </div>
+      <div class="res-card">
+        <div class="res-type">DAYE Trading</div>
+        <div class="res-title">Back to Curriculum</div>
+        <div class="res-desc">Continue your structured learning path. Pick up where you left off in the DAYE Trading curriculum.</div>
+        <a href="curriculum.html" class="btn btn-primary btn-sm">View Curriculum</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> External links are provided for educational purposes only. DAYE Trading does not endorse or guarantee any third-party platform or service. Always do your own research.
+  </div>
+</div>
+
+<footer><p>© 2026 DAYE Trading. Educational purposes only.</p></footer>
+<script src="js/app.js"></script>
+</body>
+</html>

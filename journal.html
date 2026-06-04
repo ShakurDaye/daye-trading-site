@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trading Journal — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.journal-hero { background:var(--bg-dark); border-bottom:1px solid var(--border); padding:2rem; }
+.trade-form { background:var(--bg-card); border:1px solid var(--border-bright); border-radius:16px; padding:2rem; margin-bottom:2rem; position:relative; }
+.trade-form::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--purple-light),transparent); border-radius:16px 16px 0 0; }
+.form-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; }
+.form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.trade-table-wrap { overflow-x:auto; }
+.trade-table { width:100%; border-collapse:collapse; font-size:13px; }
+.trade-table th { background:var(--bg-card2); color:var(--text-muted); font-weight:500; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+.trade-table td { padding:12px 14px; border-bottom:1px solid var(--border-subtle); color:var(--text-secondary); vertical-align:middle; }
+.trade-table tr:hover td { background:var(--bg-card2); }
+.pnl-pos { color:var(--success); font-weight:500; }
+.pnl-neg { color:var(--danger);  font-weight:500; }
+.trade-type-long  { color:var(--success); }
+.trade-type-short { color:var(--danger); }
+.empty-state { text-align:center; padding:3rem; color:var(--text-muted); }
+.section-tabs { display:flex; gap:10px; margin-bottom:1.5rem; border-bottom:1px solid var(--border); }
+.tab-btn { background:none; border:none; color:var(--text-muted); font-size:14px; font-family:'DM Sans',sans-serif; padding:0.75rem 1rem; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; }
+.tab-btn.active { color:var(--purple-light); border-bottom-color:var(--purple-light); }
+.stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:2rem; }
+.stat-mini { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:1rem; }
+.stat-mini-num { font-family:'Rajdhani',sans-serif; font-size:1.6rem; font-weight:700; }
+.stat-mini-label { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; }
+@media(max-width:600px){.form-row-2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">DT</div>
+    <span class="logo-text"><span>DAYE</span> Trading</span>
+  </a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="curriculum.html">Curriculum</a></li>
+    <li><a href="journal.html" class="active">Journal</a></li>
+    <li><a href="paper-trading.html">Paper Trading</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+  </div>
+</nav>
+
+<div class="journal-hero">
+  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+    <div>
+      <h1 style="margin-bottom:0.25rem;">Trading Journal 📓</h1>
+      <p style="color:var(--text-muted);font-size:14px;">Track your practice trades, emotions, and lessons learned.</p>
+    </div>
+    <button class="btn btn-primary" id="showFormBtn">+ Log a Trade</button>
+  </div>
+</div>
+
+<div class="section">
+  <!-- Stats row -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-mini"><div class="stat-mini-num" id="statTotal">0</div><div class="stat-mini-label">Total Trades</div></div>
+    <div class="stat-mini"><div class="stat-mini-num pnl-pos" id="statWins">0</div><div class="stat-mini-label">Wins</div></div>
+    <div class="stat-mini"><div class="stat-mini-num pnl-neg" id="statLoss">0</div><div class="stat-mini-label">Losses</div></div>
+    <div class="stat-mini"><div class="stat-mini-num" id="statWinRate">0%</div><div class="stat-mini-label">Win Rate</div></div>
+    <div class="stat-mini"><div class="stat-mini-num" id="statTotalPnl">$0</div><div class="stat-mini-label">Total P&L</div></div>
+  </div>
+
+  <!-- Add Trade Form -->
+  <div class="trade-form" id="tradeForm" style="display:none;">
+    <h3 style="margin-bottom:1.5rem;">Log a Trade</h3>
+    <div class="form-row" style="margin-bottom:14px;">
+      <div class="form-group">
+        <label class="form-label" for="tradeDate">Date</label>
+        <input class="form-input" type="date" id="tradeDate"/>
+        <div class="form-error" id="tradeDateError"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tradeTicker">Ticker Symbol</label>
+        <input class="form-input" type="text" id="tradeTicker" placeholder="e.g. AAPL" maxlength="10"/>
+        <div class="form-error" id="tradeTickerError"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tradeType">Trade Type</label>
+        <select class="form-input" id="tradeType">
+          <option value="">Select type</option>
+          <option value="Long">Long</option>
+          <option value="Short">Short</option>
+        </select>
+        <div class="form-error" id="tradeTypeError"></div>
+      </div>
+    </div>
+    <div class="form-row" style="margin-bottom:14px;">
+      <div class="form-group">
+        <label class="form-label" for="tradeEntry">Entry Price ($)</label>
+        <input class="form-input" type="number" step="0.01" id="tradeEntry" placeholder="0.00"/>
+        <div class="form-error" id="tradeEntryError"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tradeExit">Exit Price ($)</label>
+        <input class="form-input" type="number" step="0.01" id="tradeExit" placeholder="0.00"/>
+        <div class="form-error" id="tradeExitError"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tradeSize">Position Size (shares)</label>
+        <input class="form-input" type="number" id="tradeSize" placeholder="0"/>
+        <div class="form-error" id="tradeSizeError"></div>
+      </div>
+    </div>
+    <div class="form-row" style="margin-bottom:14px;">
+      <div class="form-group">
+        <label class="form-label" for="tradeStop">Stop Loss ($)</label>
+        <input class="form-input" type="number" step="0.01" id="tradeStop" placeholder="0.00"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tradeTakeProfit">Take Profit ($)</label>
+        <input class="form-input" type="number" step="0.01" id="tradeTakeProfit" placeholder="0.00"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">P&L (auto-calculated)</label>
+        <input class="form-input" type="text" id="tradePnl" readonly placeholder="Will calculate" style="cursor:default;"/>
+      </div>
+    </div>
+    <div class="form-row-2" style="margin-bottom:14px;">
+      <div class="form-group">
+        <label class="form-label" for="tradeEmotionBefore">Emotions Before Trade</label>
+        <select class="form-input" id="tradeEmotionBefore">
+          <option value="">Select…</option>
+          <option>Calm & focused</option><option>Excited</option><option>Nervous</option><option>Fearful</option><option>Greedy</option><option>Confident</option><option>Unsure</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tradeEmotionAfter">Emotions After Trade</label>
+        <select class="form-input" id="tradeEmotionAfter">
+          <option value="">Select…</option>
+          <option>Satisfied</option><option>Frustrated</option><option>Excited</option><option>Regretful</option><option>Neutral</option><option>Overconfident</option><option>Disciplined</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px;">
+      <label class="form-label" for="tradeNotes">Notes</label>
+      <textarea class="form-input" id="tradeNotes" placeholder="Why did you take this trade? What happened?" style="min-height:80px;"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:1.5rem;">
+      <label class="form-label" for="tradeLessonLearned">Lesson Learned</label>
+      <textarea class="form-input" id="tradeLessonLearned" placeholder="What will you do differently next time?" style="min-height:60px;"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" id="saveTradeBtn">Save Trade</button>
+      <button class="btn btn-ghost" id="cancelFormBtn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="section-tabs">
+    <button class="tab-btn active" data-tab="all">All Trades</button>
+    <button class="tab-btn" data-tab="long">Long</button>
+    <button class="tab-btn" data-tab="short">Short</button>
+    <button class="tab-btn" data-tab="wins">Wins</button>
+    <button class="tab-btn" data-tab="losses">Losses</button>
+  </div>
+
+  <!-- Trades Table -->
+  <div class="trade-table-wrap">
+    <table class="trade-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>Ticker</th><th>Type</th><th>Entry</th><th>Exit</th><th>Size</th><th>P&L</th><th>Emotion Before</th><th>Notes</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="tradeTableBody"></tbody>
+    </table>
+    <div id="emptyState" class="empty-state">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">📓</div>
+      <h3 style="margin-bottom:0.5rem;">No trades logged yet</h3>
+      <p>Click "Log a Trade" above to start tracking your practice trades.</p>
+    </div>
+  </div>
+
+  <div class="disclaimer mt-4">
+    <strong>Disclaimer:</strong> This journal is for practice and educational purposes only. DAYE Trading does not execute real trades. This is not financial advice.
+  </div>
+</div>
+
+<footer><p>© 2026 DAYE Trading. Educational purposes only.</p></footer>
+<script src="js/app.js"></script>
+<script>
+const JOURNAL_KEY_PREFIX = 'dt_journal_';
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!Auth.requireAuth()) return;
+  const user = Auth.getCurrentUser();
+  const JKEY = JOURNAL_KEY_PREFIX + user.id;
+
+  function getTrades() { try { return JSON.parse(localStorage.getItem(JKEY)) || []; } catch { return []; } }
+  function saveTrades(t) { localStorage.setItem(JKEY, JSON.stringify(t)); }
+
+  let currentFilter = 'all';
+
+  function calcPnl(type, entry, exit, size) {
+    const e = parseFloat(entry), x = parseFloat(exit), s = parseInt(size);
+    if (isNaN(e)||isNaN(x)||isNaN(s)||s<=0) return null;
+    const pnl = type === 'Short' ? (e - x) * s : (x - e) * s;
+    return Math.round(pnl * 100) / 100;
+  }
+
+  function renderStats(trades) {
+    const wins   = trades.filter(t => t.pnl > 0).length;
+    const losses = trades.filter(t => t.pnl < 0).length;
+    const totalPnl = trades.reduce((s,t) => s + (t.pnl || 0), 0);
+    document.getElementById('statTotal').textContent   = trades.length;
+    document.getElementById('statWins').textContent    = wins;
+    document.getElementById('statLoss').textContent    = losses;
+    document.getElementById('statWinRate').textContent = trades.length ? Math.round(wins/trades.length*100)+'%' : '0%';
+    const pnlEl = document.getElementById('statTotalPnl');
+    pnlEl.textContent = '$' + Math.abs(totalPnl).toFixed(2);
+    pnlEl.className   = 'stat-mini-num ' + (totalPnl >= 0 ? 'pnl-pos' : 'pnl-neg');
+  }
+
+  function renderTable(filter) {
+    let trades = getTrades();
+    if (filter === 'long')   trades = trades.filter(t => t.type === 'Long');
+    if (filter === 'short')  trades = trades.filter(t => t.type === 'Short');
+    if (filter === 'wins')   trades = trades.filter(t => t.pnl > 0);
+    if (filter === 'losses') trades = trades.filter(t => t.pnl < 0);
+
+    renderStats(getTrades());
+    const tbody = document.getElementById('tradeTableBody');
+    const empty = document.getElementById('emptyState');
+
+    if (trades.length === 0) { tbody.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display = 'none';
+    tbody.innerHTML = trades.map((t,i) => `
+      <tr>
+        <td>${t.date || '—'}</td>
+        <td style="font-weight:600;color:var(--text-primary);">${t.ticker.toUpperCase()}</td>
+        <td class="trade-type-${t.type.toLowerCase()}">${t.type}</td>
+        <td>$${parseFloat(t.entry).toFixed(2)}</td>
+        <td>$${parseFloat(t.exit).toFixed(2)}</td>
+        <td>${t.size}</td>
+        <td class="${t.pnl > 0 ? 'pnl-pos' : t.pnl < 0 ? 'pnl-neg' : ''}">${t.pnl !== null ? (t.pnl >= 0 ? '+$' : '-$') + Math.abs(t.pnl).toFixed(2) : '—'}</td>
+        <td>${t.emotionBefore || '—'}</td>
+        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${t.notes}">${t.notes || '—'}</td>
+        <td><button class="btn btn-sm btn-ghost" onclick="deleteTrade(${i})">🗑</button></td>
+      </tr>`).join('');
+  }
+
+  window.deleteTrade = function(idx) {
+    if (!confirm('Delete this trade?')) return;
+    const trades = getTrades();
+    trades.splice(idx, 1);
+    saveTrades(trades);
+    renderTable(currentFilter);
+    Toast.show('Trade deleted.', 'info');
+  };
+
+  // Live P&L calculation
+  ['tradeEntry','tradeExit','tradeSize','tradeType'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      const type  = document.getElementById('tradeType').value;
+      const entry = document.getElementById('tradeEntry').value;
+      const exit  = document.getElementById('tradeExit').value;
+      const size  = document.getElementById('tradeSize').value;
+      const pnl   = calcPnl(type, entry, exit, size);
+      const el    = document.getElementById('tradePnl');
+      if (pnl !== null) {
+        el.value = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
+        el.style.color = pnl >= 0 ? 'var(--success)' : 'var(--danger)';
+      } else { el.value = ''; el.style.color = ''; }
+    });
+  });
+
+  // Show/hide form
+  document.getElementById('showFormBtn').addEventListener('click', () => {
+    const f = document.getElementById('tradeForm');
+    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+    if (f.style.display === 'block') f.scrollIntoView({behavior:'smooth'});
+  });
+  document.getElementById('cancelFormBtn').addEventListener('click', () => {
+    document.getElementById('tradeForm').style.display = 'none';
+  });
+
+  // Save trade
+  document.getElementById('saveTradeBtn').addEventListener('click', () => {
+    let valid = true;
+    ['tradeDate','tradeTicker','tradeType','tradeEntry','tradeExit','tradeSize'].forEach(id => Validate.clearError(id));
+
+    const date   = document.getElementById('tradeDate').value;
+    const ticker = document.getElementById('tradeTicker').value.trim();
+    const type   = document.getElementById('tradeType').value;
+    const entry  = document.getElementById('tradeEntry').value;
+    const exit   = document.getElementById('tradeExit').value;
+    const size   = document.getElementById('tradeSize').value;
+
+    if (!date)   { Validate.showError('tradeDate','Enter a date.'); valid=false; }
+    if (!ticker) { Validate.showError('tradeTicker','Enter ticker symbol.'); valid=false; }
+    if (!type)   { Validate.showError('tradeType','Select trade type.'); valid=false; }
+    if (!Validate.numeric(entry)) { Validate.showError('tradeEntry','Enter a valid entry price.'); valid=false; }
+    if (!Validate.numeric(exit))  { Validate.showError('tradeExit','Enter a valid exit price.'); valid=false; }
+    if (!Validate.numeric(size))  { Validate.showError('tradeSize','Enter position size.'); valid=false; }
+    if (!valid) return;
+
+    const pnl = calcPnl(type, entry, exit, size);
+    const trade = {
+      date, ticker, type,
+      entry: parseFloat(entry).toFixed(2),
+      exit:  parseFloat(exit).toFixed(2),
+      size:  parseInt(size), pnl,
+      stop:     document.getElementById('tradeStop').value,
+      tp:       document.getElementById('tradeTakeProfit').value,
+      emotionBefore: document.getElementById('tradeEmotionBefore').value,
+      emotionAfter:  document.getElementById('tradeEmotionAfter').value,
+      notes:         document.getElementById('tradeNotes').value,
+      lessonLearned: document.getElementById('tradeLessonLearned').value,
+      loggedAt: new Date().toISOString()
+    };
+
+    const trades = getTrades();
+    trades.unshift(trade);
+    saveTrades(trades);
+    document.getElementById('tradeForm').style.display = 'none';
+    document.getElementById('tradeForm').reset();
+    document.getElementById('tradePnl').value = '';
+    renderTable(currentFilter);
+    Toast.show('Trade saved to journal!', 'success');
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilter = this.dataset.tab;
+      renderTable(currentFilter);
+    });
+  });
+
+  // Set today's date default
+  document.getElementById('tradeDate').value = new Date().toISOString().split('T')[0];
+
+  renderTable('all');
+});
+</script>
+</body>
+</html>

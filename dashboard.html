@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.dash-header { background:var(--bg-dark); border-bottom:1px solid var(--border); padding:2rem; }
+.welcome-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+.welcome-title { font-size:1.8rem; margin-bottom:0.25rem; }
+.welcome-title span { color:var(--purple-light); }
+.stat-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-top:2rem; }
+.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem; }
+.stat-card-num { font-family:'Rajdhani',sans-serif; font-size:2rem; font-weight:700; color:var(--purple-light); }
+.stat-card-label { font-size:12px; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
+.quick-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+.quick-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-align:center; text-decoration:none; color:var(--text-primary); transition:all 0.2s; display:block; }
+.quick-card:hover { border-color:var(--border-bright); transform:translateY(-2px); color:var(--text-primary); }
+.quick-card-icon { font-size:1.8rem; margin-bottom:0.5rem; display:block; }
+.quick-card-label { font-size:13px; font-weight:500; }
+.continue-card { background:var(--bg-card); border:1px solid var(--border-bright); border-radius:14px; padding:1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; position:relative; overflow:hidden; }
+.continue-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--purple-light),transparent); }
+.phase-badge { display:inline-block; padding:4px 12px; border-radius:100px; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.5rem; }
+.activity-item { display:flex; align-items:center; gap:12px; padding:0.75rem 0; border-bottom:1px solid var(--border-subtle); }
+.activity-item:last-child { border-bottom:none; }
+.activity-dot { width:8px; height:8px; border-radius:50%; background:var(--purple); flex-shrink:0; }
+.activity-text { font-size:13px; color:var(--text-secondary); }
+.activity-time { font-size:11px; color:var(--text-muted); margin-left:auto; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">DT</div>
+    <span class="logo-text"><span>DAYE</span> Trading</span>
+  </a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html" class="active">Dashboard</a></li>
+    <li><a href="curriculum.html">Curriculum</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="paper-trading.html">Paper Trading</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+  </div>
+</nav>
+
+<div class="dash-header">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="welcome-row">
+      <div>
+        <h1 class="welcome-title">Welcome back, <span id="userFirstName">Student</span>! 👋</h1>
+        <p style="color:var(--text-muted);font-size:14px;" id="userSubLabel">Free Plan · Phase 1 unlocked</p>
+      </div>
+      <a href="curriculum.html" class="btn btn-primary">Continue Learning →</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-card-num" id="statCompleted">0</div>
+        <div class="stat-card-label">Lessons Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num" id="statRemaining">32</div>
+        <div class="stat-card-label">Lessons Remaining</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num" id="statPercent">0%</div>
+        <div class="stat-card-label">Overall Progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num" id="statPhase">1</div>
+        <div class="stat-card-label">Current Phase</div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div style="margin-top:1.25rem;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+        <span>Overall course progress</span><span id="progressLabel">0 / 32 lessons</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <!-- Continue where you left off -->
+  <div class="continue-card mb-4">
+    <div>
+      <div class="phase-badge" id="continueBadge" style="background:rgba(59,130,246,0.12);color:var(--phase1);">Phase 1</div>
+      <h3 id="continueTitle" style="margin-bottom:0.25rem;">What are stocks & where do they come from?</h3>
+      <p style="font-size:13px;color:var(--text-muted);">Lesson 1 · Estimated 15 min</p>
+    </div>
+    <a href="lesson.html?id=1" class="btn btn-primary">Continue Lesson →</a>
+  </div>
+
+  <div class="grid-2 mb-4">
+    <!-- Quick Links -->
+    <div>
+      <h3 style="margin-bottom:1rem;">Quick Access</h3>
+      <div class="quick-links">
+        <a href="curriculum.html" class="quick-card">
+          <span class="quick-card-icon">🗺️</span>
+          <div class="quick-card-label">Curriculum</div>
+        </a>
+        <a href="journal.html" class="quick-card">
+          <span class="quick-card-icon">📓</span>
+          <div class="quick-card-label">Journal</div>
+        </a>
+        <a href="paper-trading.html" class="quick-card">
+          <span class="quick-card-icon">📈</span>
+          <div class="quick-card-label">Paper Trading</div>
+        </a>
+        <a href="glossary.html" class="quick-card">
+          <span class="quick-card-icon">📖</span>
+          <div class="quick-card-label">Glossary</div>
+        </a>
+        <a href="resources.html" class="quick-card">
+          <span class="quick-card-icon">🔗</span>
+          <div class="quick-card-label">Resources</div>
+        </a>
+        <a href="risk.html" class="quick-card">
+          <span class="quick-card-icon">🛡️</span>
+          <div class="quick-card-label">Risk Tools</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div>
+      <h3 style="margin-bottom:1rem;">Recent Activity</h3>
+      <div class="card" id="activityList">
+        <div class="activity-item">
+          <div class="activity-dot"></div>
+          <div class="activity-text">No activity yet — start your first lesson!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <strong>Reminder:</strong> DAYE Trading is for educational purposes only. This is not financial advice. Always practice with paper trading before using real money.
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 DAYE Trading. For educational purposes only. Not financial advice.</p>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!Auth.requireAuth()) return;
+  const user = Auth.getCurrentUser();
+
+  // Populate name
+  document.getElementById('userFirstName').textContent = user.firstName;
+  document.getElementById('userSubLabel').textContent =
+    (user.subscription === 'premium' ? 'Premium Plan' : 'Free Plan') + ' · Phase 1 unlocked';
+
+  // Progress stats
+  const completed = Progress.getCount(user.id);
+  const percent   = Progress.getPercent(user.id, TOTAL_LESSONS);
+  const remaining = TOTAL_LESSONS - completed;
+
+  document.getElementById('statCompleted').textContent = completed;
+  document.getElementById('statRemaining').textContent = remaining;
+  document.getElementById('statPercent').textContent   = percent + '%';
+  document.getElementById('progressBar').style.width   = percent + '%';
+  document.getElementById('progressLabel').textContent = `${completed} / ${TOTAL_LESSONS} lessons`;
+
+  // Determine current phase
+  let currentPhase = 1;
+  let currentLesson = CURRICULUM[0].lessons[0];
+  outer: for (const phase of CURRICULUM) {
+    for (const lesson of phase.lessons) {
+      if (!Progress.isComplete(user.id, lesson.id)) {
+        currentPhase = phase.id;
+        currentLesson = lesson;
+        break outer;
+      }
+    }
+  }
+  document.getElementById('statPhase').textContent = currentPhase;
+  document.getElementById('continueTitle').textContent = currentLesson.title;
+  document.getElementById('continueBadge').textContent = 'Phase ' + currentPhase;
+  document.querySelector('.continue-card a').href = 'lesson.html?id=' + currentLesson.id;
+
+  // Activity
+  const prog = Progress.get(user.id);
+  const completed_ids = Object.keys(prog).filter(k => prog[k].completed);
+  if (completed_ids.length > 0) {
+    const list = document.getElementById('activityList');
+    list.innerHTML = '';
+    completed_ids.slice(-5).reverse().forEach(lid => {
+      const lesson = CURRICULUM.flatMap(p => p.lessons).find(l => l.id == lid);
+      if (!lesson) return;
+      const d = new Date(prog[lid].completedAt);
+      const el = document.createElement('div');
+      el.className = 'activity-item';
+      el.innerHTML = `<div class="activity-dot" style="background:var(--success)"></div>
+        <div class="activity-text">Completed: ${lesson.title}</div>
+        <div class="activity-time">${d.toLocaleDateString()}</div>`;
+      list.appendChild(el);
+    });
+  }
+});
+</script>
+</body>
+</html>

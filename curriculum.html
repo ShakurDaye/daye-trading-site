@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Curriculum — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.curr-hero { background:var(--bg-dark); padding:3rem 2rem 2rem; text-align:center; border-bottom:1px solid var(--border); }
+.phase-block { margin-bottom:2.5rem; }
+.phase-header { display:flex; align-items:center; gap:14px; padding:1rem 1.5rem; border-radius:12px 12px 0 0; border:1px solid; margin-bottom:0; }
+.phase-num { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:1.5rem; opacity:0.9; }
+.phase-meta { flex:1; }
+.phase-title { font-size:1.1rem; font-weight:700; margin:0; }
+.phase-weeks { font-size:12px; opacity:0.7; margin-top:2px; }
+.phase-prog-wrap { margin-left:auto; text-align:right; }
+.phase-prog-label { font-size:11px; opacity:0.7; margin-bottom:4px; }
+.phase-prog-bar { width:120px; height:6px; background:rgba(0,0,0,0.25); border-radius:100px; overflow:hidden; }
+.phase-prog-fill { height:100%; border-radius:100px; background:currentColor; opacity:0.8; transition:width 0.5s; }
+.lessons-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:0; border:1px solid; border-top:none; border-radius:0 0 12px 12px; overflow:hidden; }
+.lesson-card { background:var(--bg-card); border-right:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); padding:1.25rem; display:flex; flex-direction:column; gap:8px; transition:background 0.2s; }
+.lesson-card:hover { background:var(--bg-card2); }
+.lesson-card.completed { background:rgba(16,185,129,0.04); }
+.lesson-card.locked { opacity:0.5; cursor:not-allowed; }
+.lesson-top { display:flex; align-items:center; justify-content:space-between; }
+.lesson-num { font-size:11px; color:var(--text-muted); font-weight:500; letter-spacing:1px; }
+.lesson-status { font-size:16px; }
+.lesson-title { font-size:14px; font-weight:500; color:var(--text-primary); line-height:1.4; flex:1; }
+.lesson-time { font-size:11px; color:var(--text-muted); }
+.lesson-btn { align-self:flex-start; margin-top:4px; font-size:12px; padding:5px 14px; border-radius:6px; }
+.locked-msg { font-size:11px; color:var(--text-muted); }
+.filter-bar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:2rem; }
+.filter-btn { background:var(--bg-card); border:1px solid var(--border); color:var(--text-muted); padding:6px 16px; border-radius:100px; font-size:13px; cursor:pointer; transition:all 0.2s; }
+.filter-btn.active,.filter-btn:hover { background:var(--purple-faint); border-color:var(--border-bright); color:var(--purple-light); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">DT</div>
+    <span class="logo-text"><span>DAYE</span> Trading</span>
+  </a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="curriculum.html" class="active">Curriculum</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="paper-trading.html">Paper Trading</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+  </div>
+</nav>
+
+<div class="curr-hero">
+  <p class="section-eyebrow">Your learning path</p>
+  <h1 style="margin-bottom:0.5rem;">Course Curriculum</h1>
+  <p style="color:var(--text-secondary);max-width:500px;margin:0 auto 1.5rem;">6 phases · 32 lessons · 24 weeks from beginner to trading-ready.</p>
+  <div style="max-width:500px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+      <span>Overall progress</span><span id="overallLabel">0 / 32</span>
+    </div>
+    <div class="progress-bar-wrap" style="height:10px;">
+      <div class="progress-bar-fill" id="overallBar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All Phases</button>
+    <button class="filter-btn" data-filter="1" style="color:var(--phase1)">Phase 1</button>
+    <button class="filter-btn" data-filter="2" style="color:var(--phase2)">Phase 2</button>
+    <button class="filter-btn" data-filter="3" style="color:var(--phase3)">Phase 3</button>
+    <button class="filter-btn" data-filter="4" style="color:var(--phase4)">Phase 4</button>
+    <button class="filter-btn" data-filter="5" style="color:var(--phase5)">Phase 5</button>
+    <button class="filter-btn" data-filter="6" style="color:var(--phase6)">Phase 6</button>
+  </div>
+
+  <div id="curriculumMap"></div>
+
+  <div class="disclaimer mt-4">
+    <strong>Disclaimer:</strong> DAYE Trading is for educational purposes only. This is not financial advice. All lessons are designed to help beginners understand trading concepts — not to guarantee trading success.
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 DAYE Trading. Educational purposes only.</p>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!Auth.requireAuth()) return;
+  const user = Auth.getCurrentUser();
+
+  const phaseColors = [null,'var(--phase1)','var(--phase2)','var(--phase3)','var(--phase4)','var(--phase5)','var(--phase6)'];
+  const phaseBgs    = [null,'rgba(59,130,246,0.08)','rgba(16,185,129,0.08)','rgba(245,158,11,0.08)','rgba(168,85,247,0.08)','rgba(239,68,68,0.08)','rgba(52,211,153,0.08)'];
+
+  // Subscription: free users only get Phase 1
+  // SUBSCRIPTION GATE — connect real subscription logic here
+  const isPremium = user.subscription === 'premium' || user.role === 'admin';
+
+  function buildMap(filterPhase) {
+    const container = document.getElementById('curriculumMap');
+    container.innerHTML = '';
+
+    CURRICULUM.forEach(phase => {
+      if (filterPhase !== 'all' && phase.id !== parseInt(filterPhase)) return;
+
+      const phaseColor = phaseColors[phase.id];
+      const phaseBg    = phaseBgs[phase.id];
+      const phaseUnlocked = isPremium || phase.id === 1;
+
+      const completed = phase.lessons.filter(l => Progress.isComplete(user.id, l.id)).length;
+      const pct = Math.round((completed / phase.lessons.length) * 100);
+
+      const block = document.createElement('div');
+      block.className = 'phase-block';
+      block.setAttribute('data-phase', phase.id);
+
+      block.innerHTML = `
+        <div class="phase-header" style="background:${phaseBg};border-color:${phaseColor};color:${phaseColor};">
+          <div class="phase-num">0${phase.id}</div>
+          <div class="phase-meta">
+            <div class="phase-title">${phase.title}</div>
+            <div class="phase-weeks">${phase.weeks} ${phaseUnlocked ? '' : '🔒 Upgrade to unlock'}</div>
+          </div>
+          <div class="phase-prog-wrap" style="color:${phaseColor}">
+            <div class="phase-prog-label">${completed}/${phase.lessons.length} done</div>
+            <div class="phase-prog-bar"><div class="phase-prog-fill" style="width:${pct}%"></div></div>
+          </div>
+        </div>
+        <div class="lessons-grid" style="border-color:${phaseColor}22;">
+          ${phase.lessons.map(lesson => {
+            const done   = Progress.isComplete(user.id, lesson.id);
+            const locked = !phaseUnlocked;
+            return `
+              <div class="lesson-card ${done ? 'completed' : ''} ${locked ? 'locked' : ''}">
+                <div class="lesson-top">
+                  <span class="lesson-num">Lesson ${lesson.id}</span>
+                  <span class="lesson-status">${done ? '✅' : locked ? '🔒' : '⭕'}</span>
+                </div>
+                <div class="lesson-title">${lesson.title}</div>
+                <div class="lesson-time">⏱ ${lesson.time}</div>
+                ${locked
+                  ? '<span class="locked-msg">Unlock with Premium</span>'
+                  : `<a href="lesson.html?id=${lesson.id}" class="btn btn-sm ${done ? 'btn-ghost' : 'btn-primary'} lesson-btn">${done ? 'Review' : 'Start Lesson'}</a>`
+                }
+              </div>`;
+          }).join('')}
+        </div>`;
+      container.appendChild(block);
+    });
+  }
+
+  // Overall progress
+  const completed = Progress.getCount(user.id);
+  const pct = Progress.getPercent(user.id, TOTAL_LESSONS);
+  document.getElementById('overallLabel').textContent = `${completed} / ${TOTAL_LESSONS}`;
+  document.getElementById('overallBar').style.width = pct + '%';
+
+  buildMap('all');
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      buildMap(this.dataset.filter);
+    });
+  });
+});
+</script>
+</body>
+</html>

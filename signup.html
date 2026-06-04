@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign Up — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.auth-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; position:relative; overflow:hidden; }
+.auth-glow { position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:600px; height:400px; background:radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%); pointer-events:none; }
+.auth-card { background:var(--bg-card); border:1px solid var(--border-bright); border-radius:20px; padding:2.5rem; width:100%; max-width:480px; position:relative; }
+.auth-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--purple-light),transparent); border-radius:20px 20px 0 0; }
+.auth-title { font-size:1.6rem; text-align:center; margin-bottom:0.35rem; }
+.auth-sub { text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:2rem; }
+.pass-wrap { position:relative; }
+.pass-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px; }
+.row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.strength-bar { height:4px; border-radius:100px; margin-top:6px; transition:all 0.3s; background:var(--bg-card2); overflow:hidden; }
+.strength-fill { height:100%; border-radius:100px; transition:all 0.3s; }
+.strength-label { font-size:11px; margin-top:4px; }
+.req-list { font-size:11px; color:var(--text-muted); margin-top:6px; display:grid; grid-template-columns:1fr 1fr; gap:2px 12px; }
+.req-item { display:flex; align-items:center; gap:4px; }
+.req-item.met { color:var(--success); }
+.divider-text { display:flex; align-items:center; gap:12px; margin:1.25rem 0; color:var(--text-muted); font-size:12px; }
+.divider-text::before,.divider-text::after { content:''; flex:1; height:1px; background:var(--border); }
+@media(max-width:480px){.row-2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="hero-grid" style="position:fixed;inset:0;"></div>
+<div class="auth-wrap">
+  <div class="auth-glow"></div>
+  <div style="width:100%;max-width:480px;">
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <a href="index.html">
+        <div class="logo-mark" style="width:52px;height:52px;font-size:16px;margin:0 auto 10px;box-shadow:0 0 24px var(--purple-glow);">DT</div>
+        <div class="logo-text" style="font-size:17px;"><span>DAYE</span> Trading</div>
+      </a>
+    </div>
+
+    <div class="auth-card">
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-sub">Join DAYE Trading and start learning.</p>
+
+      <form id="signupForm" novalidate>
+        <div class="row-2">
+          <div class="form-group">
+            <label class="form-label" for="firstName">First Name</label>
+            <input class="form-input" type="text" id="firstName" placeholder="First name" autocomplete="given-name"/>
+            <div class="form-error" id="firstNameError"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lastName">Last Name</label>
+            <input class="form-input" type="text" id="lastName" placeholder="Last name" autocomplete="family-name"/>
+            <div class="form-error" id="lastNameError"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+          <div class="form-error" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input class="form-input" type="text" id="username" placeholder="Choose a username" autocomplete="username"/>
+          <div class="form-error" id="usernameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="pass-wrap">
+            <input class="form-input" type="password" id="password" placeholder="Create a strong password" autocomplete="new-password"/>
+            <button type="button" class="pass-toggle" id="passToggle">👁️</button>
+          </div>
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+          <div class="strength-label" id="strengthLabel"></div>
+          <div class="req-list" id="reqList">
+            <div class="req-item" id="req-length">✗ 8+ characters</div>
+            <div class="req-item" id="req-upper">✗ Uppercase letter</div>
+            <div class="req-item" id="req-lower">✗ Lowercase letter</div>
+            <div class="req-item" id="req-number">✗ Number</div>
+            <div class="req-item" id="req-special">✗ Special character</div>
+          </div>
+          <div class="form-error" id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">Confirm Password</label>
+          <div class="pass-wrap">
+            <input class="form-input" type="password" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password"/>
+            <button type="button" class="pass-toggle" id="confToggle">👁️</button>
+          </div>
+          <div class="form-error" id="confirmPasswordError"></div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:1.5rem;">
+          <input type="checkbox" id="terms" style="accent-color:var(--purple);width:16px;height:16px;margin-top:3px;cursor:pointer;flex-shrink:0;"/>
+          <label for="terms" style="font-size:13px;color:var(--text-secondary);cursor:pointer;line-height:1.5;">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand DAYE Trading is for educational purposes only and is not financial advice.
+          </label>
+        </div>
+        <div class="form-error" id="termsError"></div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="signupBtn">Create Account</button>
+
+        <div class="divider-text">already have an account?</div>
+        <a href="login.html" class="btn btn-outline btn-full">Sign In</a>
+      </form>
+    </div>
+
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:1.5rem;">
+      © 2026 DAYE Trading. Educational purposes only.
+    </p>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (Auth.getCurrentUser()) window.location.href = 'dashboard.html';
+
+  // Password toggles
+  function makeToggle(btnId, inputId) {
+    document.getElementById(btnId).addEventListener('click', function() {
+      const inp = document.getElementById(inputId);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      this.textContent = show ? '🙈' : '👁️';
+    });
+  }
+  makeToggle('passToggle','password');
+  makeToggle('confToggle','confirmPassword');
+
+  // Password strength
+  document.getElementById('password').addEventListener('input', function() {
+    const pw = this.value;
+    const r  = Validate.password(pw);
+    const s  = Validate.strength(pw);
+
+    document.getElementById('strengthFill').style.width = pw ? s.width : '0';
+    document.getElementById('strengthFill').style.background = s.color;
+    document.getElementById('strengthLabel').textContent = pw ? s.label : '';
+    document.getElementById('strengthLabel').style.color = s.color;
+
+    const set = (id, met, text) => {
+      const el = document.getElementById(id);
+      el.textContent = (met ? '✓ ' : '✗ ') + text;
+      el.className = 'req-item' + (met ? ' met' : '');
+    };
+    set('req-length', r.length, '8+ characters');
+    set('req-upper',  r.upper,  'Uppercase letter');
+    set('req-lower',  r.lower,  'Lowercase letter');
+    set('req-number', r.number, 'Number');
+    set('req-special',r.special,'Special character');
+    Validate.clearError('password');
+  });
+
+  // Real-time clear
+  ['firstName','lastName','email','username','confirmPassword'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => Validate.clearError(id));
+  });
+
+  // Form submit
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+    ['firstName','lastName','email','username','password','confirmPassword','terms'].forEach(id => {
+      const el = id === 'terms' ? null : document.getElementById(id);
+      if (el) Validate.clearError(id);
+    });
+
+    const fn  = document.getElementById('firstName').value.trim();
+    const ln  = document.getElementById('lastName').value.trim();
+    const em  = document.getElementById('email').value.trim();
+    const un  = document.getElementById('username').value.trim();
+    const pw  = document.getElementById('password').value;
+    const cpw = document.getElementById('confirmPassword').value;
+    const tc  = document.getElementById('terms').checked;
+
+    if (!fn || !Validate.name(fn)) { Validate.showError('firstName', 'Enter a valid first name.'); valid = false; }
+    if (!ln || !Validate.name(ln)) { Validate.showError('lastName', 'Enter a valid last name.'); valid = false; }
+    if (!Validate.email(em))       { Validate.showError('email', 'Enter a valid email address.'); valid = false; }
+    if (un.length < 3)             { Validate.showError('username', 'Username must be at least 3 characters.'); valid = false; }
+    if (!Validate.password(pw).valid) { Validate.showError('password', 'Password does not meet requirements.'); valid = false; }
+    if (pw !== cpw)                { Validate.showError('confirmPassword', 'Passwords do not match.'); valid = false; }
+    if (!tc)                       { Validate.showError('terms', 'You must agree to the terms.'); valid = false; }
+    if (!valid) return;
+
+    const btn = document.getElementById('signupBtn');
+    btn.textContent = 'Creating account…'; btn.disabled = true;
+
+    setTimeout(() => {
+      const result = Auth.signup({ firstName:fn, lastName:ln, email:em, username:un, password:pw });
+      if (result.success) {
+        Auth.login(em, pw, false);
+        Toast.show('Account created! Welcome to DAYE Trading.', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 900);
+      } else {
+        Toast.show(result.message, 'error');
+        btn.textContent = 'Create Account'; btn.disabled = false;
+      }
+    }, 700);
+  });
+});
+</script>
+</body>
+</html>

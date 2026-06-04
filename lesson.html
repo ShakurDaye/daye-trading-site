@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lesson — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.lesson-hero { background:var(--bg-dark); border-bottom:1px solid var(--border); padding:2rem; }
+.breadcrumb { font-size:12px; color:var(--text-muted); margin-bottom:0.75rem; }
+.breadcrumb a { color:var(--text-muted); }
+.breadcrumb a:hover { color:var(--purple-light); }
+.lesson-meta { display:flex; gap:12px; flex-wrap:wrap; margin-top:0.75rem; }
+.video-area { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:2rem; }
+.video-placeholder { background:linear-gradient(135deg,#0d0a1a 0%,#130f20 100%); aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; }
+.video-placeholder-icon { font-size:3rem; }
+.video-placeholder p { color:var(--text-muted); font-size:14px; text-align:center; max-width:300px; }
+.video-frame { width:100%; aspect-ratio:16/9; border:none; }
+.lesson-body { display:grid; grid-template-columns:1fr 300px; gap:2rem; }
+.lesson-content h3 { margin-bottom:0.75rem; }
+.key-terms-list { display:flex; flex-direction:column; gap:8px; }
+.key-term { background:var(--bg-card2); border:1px solid var(--border); border-radius:8px; padding:0.75rem; }
+.key-term-word { font-size:13px; font-weight:600; color:var(--purple-light); margin-bottom:4px; }
+.key-term-def { font-size:12px; color:var(--text-muted); line-height:1.5; }
+.quiz-option { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:0.75rem 1rem; cursor:pointer; font-size:14px; color:var(--text-secondary); transition:all 0.2s; margin-bottom:8px; }
+.quiz-option:hover { border-color:var(--border-bright); color:var(--text-primary); }
+.quiz-option.correct { border-color:var(--success); background:rgba(16,185,129,0.08); color:var(--success); }
+.quiz-option.wrong   { border-color:var(--danger); background:rgba(239,68,68,0.08); color:var(--danger); }
+.lesson-nav { display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap; margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border); }
+.sidebar-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:1rem; }
+.sidebar-card h4 { font-size:14px; margin-bottom:1rem; }
+.notes-input { width:100%; background:var(--bg-input); border:1px solid var(--border); color:var(--text-primary); font-family:'DM Sans',sans-serif; font-size:13px; padding:10px 12px; border-radius:8px; resize:vertical; min-height:120px; outline:none; }
+.notes-input:focus { border-color:var(--purple); }
+.complete-btn { background:var(--success); color:#fff; width:100%; text-align:center; padding:12px; border-radius:8px; border:none; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+.complete-btn:hover { background:#059669; }
+.complete-btn.done { background:var(--bg-card2); color:var(--success); border:1px solid var(--success); cursor:default; }
+@media(max-width:768px){.lesson-body{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">DT</div>
+    <span class="logo-text"><span>DAYE</span> Trading</span>
+  </a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="curriculum.html">Curriculum</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+  </div>
+</nav>
+
+<div class="lesson-hero" id="lessonHero">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a> › <a href="curriculum.html">Curriculum</a> › <span id="breadPhase">Phase 1</span> › <span id="breadTitle">Lesson</span>
+    </div>
+    <h1 id="lessonTitle" style="margin-bottom:0.5rem;">Loading…</h1>
+    <div class="lesson-meta">
+      <span class="badge badge-purple" id="lessonPhaseTag">Phase 1</span>
+      <span class="badge badge-info" id="lessonNumTag">Lesson 1</span>
+      <span class="badge badge-warning" id="lessonTimeTag">⏱ 15 min</span>
+      <span class="badge badge-success hidden" id="lessonDoneTag">✅ Completed</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="lesson-body">
+    <!-- Main content -->
+    <div class="lesson-content">
+      <!-- Video -->
+      <div class="video-area" id="videoArea">
+        <div class="video-placeholder" id="videoPlaceholder">
+          <div class="video-placeholder-icon">🎬</div>
+          <p>Video lesson coming soon.<br/>Add your YouTube link to display it here.</p>
+          <a href="#" class="btn btn-outline btn-sm" id="watchYtBtn" target="_blank" rel="noopener">Watch on YouTube</a>
+        </div>
+        <!-- Actual YouTube embed loads here when URL is added -->
+        <!-- <iframe class="video-frame" id="videoFrame" src="" allowfullscreen loading="lazy"></iframe> -->
+      </div>
+
+      <!-- Summary -->
+      <div class="card mb-3">
+        <h3>Lesson Summary</h3>
+        <p id="lessonSummary">This lesson will be available once the video is uploaded. Check back soon.</p>
+      </div>
+
+      <!-- Key Terms -->
+      <div class="card mb-3">
+        <h3>Key Terms</h3>
+        <div class="key-terms-list" id="keyTerms">
+          <div class="key-term">
+            <div class="key-term-word">Loading…</div>
+            <div class="key-term-def">Key terms will appear here.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz -->
+      <div class="card mb-3" id="quizSection">
+        <h3>Check for Understanding</h3>
+        <p style="font-size:14px;margin-bottom:1rem;" id="quizQuestion">Quiz question will appear here after video is added.</p>
+        <div id="quizOptions"></div>
+        <div id="quizResult" style="font-size:14px;margin-top:0.75rem;display:none;"></div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="disclaimer">
+        <strong>Educational content only.</strong> This lesson is for learning purposes and is not financial advice. Always consult a qualified financial professional before making investment decisions.
+      </div>
+
+      <!-- Prev / Next navigation -->
+      <div class="lesson-nav">
+        <a href="#" class="btn btn-ghost" id="prevBtn">← Previous Lesson</a>
+        <a href="curriculum.html" class="btn btn-ghost">Back to Curriculum</a>
+        <a href="#" class="btn btn-primary" id="nextBtn">Next Lesson →</a>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <!-- Mark complete -->
+      <div class="sidebar-card">
+        <h4>Your Progress</h4>
+        <button class="complete-btn" id="completeBtn">Mark as Complete ✓</button>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:0.75rem;text-align:center;" id="completeMeta"></div>
+      </div>
+
+      <!-- Notes -->
+      <div class="sidebar-card">
+        <h4>My Notes</h4>
+        <textarea class="notes-input" id="notesInput" placeholder="Type your notes for this lesson…"></textarea>
+        <button class="btn btn-outline btn-sm btn-full mt-2" id="saveNotesBtn">Save Notes</button>
+      </div>
+
+      <!-- Lesson list mini -->
+      <div class="sidebar-card">
+        <h4>Phase Lessons</h4>
+        <div id="phaseLessonList" style="display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><p>© 2026 DAYE Trading. Educational purposes only.</p></footer>
+
+<script src="js/app.js"></script>
+<script>
+// Lesson content data — add YouTube URLs and summaries here
+const LESSON_CONTENT = {
+  1:  { summary:"Learn what stocks are, how companies issue shares, and why people invest in the stock market.", youtubeUrl:"", keyTerms:[{w:"Stock",d:"A share of ownership in a company."},{w:"Share",d:"One unit of stock ownership."}], quiz:{q:"What is a stock?",opts:["A type of bank account","A share of ownership in a company","A government bond","A currency"],correct:1} },
+  2:  { summary:"Understand how buyers and sellers come together in the stock market and how prices are set.", youtubeUrl:"", keyTerms:[{w:"Market",d:"A place where buyers and sellers trade stocks."},{w:"Price",d:"What buyers agree to pay for a stock."}], quiz:{q:"How are stock prices set?",opts:["By the government","By supply and demand between buyers and sellers","By the company itself","By the bank"],correct:1} },
+  3:  { summary:"Explore the major US stock exchanges — NYSE and NASDAQ — and learn how trades are executed.", youtubeUrl:"", keyTerms:[{w:"NYSE",d:"New York Stock Exchange — the largest stock exchange."},{w:"NASDAQ",d:"An electronic exchange known for tech stocks."}], quiz:{q:"Which exchange is known for tech stocks?",opts:["NYSE","NASDAQ","S&P 500","Dow Jones"],correct:1} },
+  4:  { summary:"Learn about bull and bear markets, market cycles, and how economic conditions affect stock prices.", youtubeUrl:"", keyTerms:[{w:"Bull Market",d:"A period when prices are rising."},{w:"Bear Market",d:"A period when prices are falling."}], quiz:{q:"What is a bear market?",opts:["A market that only trades animal stocks","A period when prices are falling","A period when prices are rising","A type of broker"],correct:1} },
+};
+
+// Default content for lessons without specific data
+function getContent(id) {
+  return LESSON_CONTENT[id] || {
+    summary: "This lesson summary will be added when the video is uploaded. Check back soon.",
+    youtubeUrl: "",
+    keyTerms: [{w:"Coming Soon",d:"Key terms will be added with the video lesson."}],
+    quiz: {q:"Quiz coming soon.",opts:["Answer A","Answer B","Answer C","Answer D"],correct:0}
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!Auth.requireAuth()) return;
+  const user = Auth.getCurrentUser();
+
+  const params   = new URLSearchParams(window.location.search);
+  const lessonId = parseInt(params.get('id')) || 1;
+
+  // Find lesson and phase
+  let lesson, phase;
+  for (const p of CURRICULUM) {
+    const l = p.lessons.find(l => l.id === lessonId);
+    if (l) { lesson = l; phase = p; break; }
+  }
+  if (!lesson) { window.location.href = 'curriculum.html'; return; }
+
+  const content = getContent(lessonId);
+  const allLessons = CURRICULUM.flatMap(p => p.lessons);
+  const idx = allLessons.findIndex(l => l.id === lessonId);
+
+  // Populate header
+  document.title = `${lesson.title} — DAYE Trading`;
+  document.getElementById('lessonTitle').textContent    = lesson.title;
+  document.getElementById('breadPhase').textContent     = phase.title;
+  document.getElementById('breadTitle').textContent     = lesson.title;
+  document.getElementById('lessonPhaseTag').textContent = phase.title;
+  document.getElementById('lessonNumTag').textContent   = `Lesson ${lesson.id}`;
+  document.getElementById('lessonTimeTag').textContent  = `⏱ ${lesson.time}`;
+
+  // Video
+  if (content.youtubeUrl) {
+    const frame = document.createElement('iframe');
+    frame.className = 'video-frame';
+    frame.src = content.youtubeUrl.replace('watch?v=','embed/');
+    frame.setAttribute('allowfullscreen','');
+    frame.setAttribute('loading','lazy');
+    document.getElementById('videoPlaceholder').replaceWith(frame);
+    document.getElementById('watchYtBtn').href = content.youtubeUrl;
+  }
+
+  // Summary & key terms
+  document.getElementById('lessonSummary').textContent = content.summary;
+  const kt = document.getElementById('keyTerms');
+  kt.innerHTML = content.keyTerms.map(t =>
+    `<div class="key-term"><div class="key-term-word">${t.w}</div><div class="key-term-def">${t.d}</div></div>`
+  ).join('');
+
+  // Quiz
+  const quiz = content.quiz;
+  document.getElementById('quizQuestion').textContent = quiz.q;
+  const qOpts = document.getElementById('quizOptions');
+  qOpts.innerHTML = quiz.opts.map((opt,i) =>
+    `<div class="quiz-option" data-idx="${i}">${opt}</div>`
+  ).join('');
+  qOpts.querySelectorAll('.quiz-option').forEach(opt => {
+    opt.addEventListener('click', function() {
+      qOpts.querySelectorAll('.quiz-option').forEach(o => o.className = 'quiz-option');
+      const chosen = parseInt(this.dataset.idx);
+      this.classList.add(chosen === quiz.correct ? 'correct' : 'wrong');
+      const res = document.getElementById('quizResult');
+      res.style.display = 'block';
+      res.style.color = chosen === quiz.correct ? 'var(--success)' : 'var(--danger)';
+      res.textContent = chosen === quiz.correct ? '✅ Correct! Great work.' : `❌ Not quite. The correct answer is: "${quiz.opts[quiz.correct]}"`;
+    });
+  });
+
+  // Prev / Next
+  const prevLesson = allLessons[idx - 1];
+  const nextLesson = allLessons[idx + 1];
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  if (prevLesson) { prevBtn.href = `lesson.html?id=${prevLesson.id}`; prevBtn.textContent = `← Lesson ${prevLesson.id}`; }
+  else { prevBtn.style.visibility = 'hidden'; }
+  if (nextLesson) { nextBtn.href = `lesson.html?id=${nextLesson.id}`; nextBtn.textContent = `Lesson ${nextLesson.id} →`; }
+  else { nextBtn.textContent = 'Back to Curriculum'; nextBtn.href = 'curriculum.html'; }
+
+  // Phase lesson list (sidebar)
+  const pList = document.getElementById('phaseLessonList');
+  phase.lessons.forEach(l => {
+    const done = Progress.isComplete(user.id, l.id);
+    const a = document.createElement('a');
+    a.href = `lesson.html?id=${l.id}`;
+    a.style.cssText = `font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:${l.id === lessonId ? 'var(--purple-faint)' : 'transparent'};color:${l.id === lessonId ? 'var(--purple-light)' : 'var(--text-muted)'};display:flex;gap:6px;align-items:center;text-decoration:none;`;
+    a.innerHTML = `<span>${done ? '✅' : '⭕'}</span><span>${l.title}</span>`;
+    pList.appendChild(a);
+  });
+
+  // Completion
+  const isComplete = Progress.isComplete(user.id, lessonId);
+  const completeBtn = document.getElementById('completeBtn');
+  const completeMeta = document.getElementById('completeMeta');
+  if (isComplete) {
+    completeBtn.textContent = '✅ Completed';
+    completeBtn.className = 'complete-btn done';
+    document.getElementById('lessonDoneTag').classList.remove('hidden');
+    const d = Progress.get(user.id)[lessonId];
+    completeMeta.textContent = `Completed ${new Date(d.completedAt).toLocaleDateString()}`;
+  }
+  completeBtn.addEventListener('click', () => {
+    if (isComplete) return;
+    Progress.markComplete(user.id, lessonId);
+    completeBtn.textContent = '✅ Completed';
+    completeBtn.className = 'complete-btn done';
+    document.getElementById('lessonDoneTag').classList.remove('hidden');
+    completeMeta.textContent = `Completed today`;
+    Toast.show('Lesson marked as complete!', 'success');
+  });
+
+  // Notes
+  const NOTES_KEY = `dt_notes_${user.id}_${lessonId}`;
+  document.getElementById('notesInput').value = localStorage.getItem(NOTES_KEY) || '';
+  document.getElementById('saveNotesBtn').addEventListener('click', () => {
+    localStorage.setItem(NOTES_KEY, document.getElementById('notesInput').value);
+    Toast.show('Notes saved.', 'success');
+  });
+});
+</script>
+</body>
+</html>

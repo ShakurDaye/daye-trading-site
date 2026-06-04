@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.auth-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; position:relative; overflow:hidden; }
+.auth-glow { position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:600px; height:400px; background:radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%); pointer-events:none; }
+.auth-card { background:var(--bg-card); border:1px solid var(--border-bright); border-radius:20px; padding:2.5rem; width:100%; max-width:420px; position:relative; }
+.auth-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--purple-light),transparent); border-radius:20px 20px 0 0; }
+.auth-logo { text-align:center; margin-bottom:2rem; }
+.auth-title { font-size:1.6rem; text-align:center; margin-bottom:0.35rem; }
+.auth-sub { text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:2rem; }
+.pass-wrap { position:relative; }
+.pass-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px; }
+.divider-text { display:flex; align-items:center; gap:12px; margin:1.25rem 0; color:var(--text-muted); font-size:12px; }
+.divider-text::before,.divider-text::after { content:''; flex:1; height:1px; background:var(--border); }
+.demo-box { background:var(--bg-card2); border:1px solid var(--border); border-radius:10px; padding:1rem; font-size:12px; color:var(--text-muted); margin-top:1.25rem; }
+.demo-box strong { color:var(--purple-light); }
+</style>
+</head>
+<body>
+<div class="hero-grid" style="position:fixed;inset:0;"></div>
+<div class="auth-wrap">
+  <div class="auth-glow"></div>
+  <div style="width:100%;max-width:420px;">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <a href="index.html">
+        <div class="logo-mark" style="width:56px;height:56px;font-size:18px;margin:0 auto 10px;box-shadow:0 0 24px var(--purple-glow);">DT</div>
+        <div class="logo-text" style="font-size:18px;"><span>DAYE</span> Trading</div>
+      </a>
+    </div>
+
+    <div class="auth-card">
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-sub">Sign in to continue your trading education.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="identifier">Email or Username</label>
+          <input class="form-input" type="text" id="identifier" placeholder="Enter your email or username" autocomplete="username"/>
+          <div class="form-error" id="identifierError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password" style="display:flex;justify-content:space-between;">
+            Password
+            <a href="forgot.html" style="font-size:12px;">Forgot password?</a>
+          </label>
+          <div class="pass-wrap">
+            <input class="form-input" type="password" id="password" placeholder="Enter your password" autocomplete="current-password"/>
+            <button type="button" class="pass-toggle" id="passToggle" aria-label="Show password">👁️</button>
+          </div>
+          <div class="form-error" id="passwordError"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;">
+          <input type="checkbox" id="rememberMe" style="accent-color:var(--purple);width:16px;height:16px;cursor:pointer;"/>
+          <label for="rememberMe" style="font-size:13px;color:var(--text-secondary);cursor:pointer;">Remember me</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="loginBtn">Sign In</button>
+
+        <div class="divider-text">or</div>
+
+        <a href="signup.html" class="btn btn-outline btn-full">Create an account</a>
+      </form>
+
+      <!-- Demo credentials -->
+      <div class="demo-box">
+        <strong>Demo account:</strong><br/>
+        Email: <code>demo@dayetrading.com</code><br/>
+        Password: <code>Demo@1234</code><br/>
+        <span style="margin-top:4px;display:block;">Admin: <code>admin@dayetrading.com</code> / <code>Admin@1234</code></span>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:1.5rem;">
+      © 2026 DAYE Trading. Educational purposes only.
+    </p>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // If already logged in, redirect
+  if (Auth.getCurrentUser()) window.location.href = 'dashboard.html';
+
+  // Password toggle
+  document.getElementById('passToggle').addEventListener('click', function() {
+    const inp = document.getElementById('password');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    this.textContent = show ? '🙈' : '👁️';
+  });
+
+  // Form submit
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    const identifier = document.getElementById('identifier').value.trim();
+    const password   = document.getElementById('password').value;
+    const remember   = document.getElementById('rememberMe').checked;
+
+    Validate.clearError('identifier');
+    Validate.clearError('password');
+
+    if (!Validate.notEmpty(identifier)) {
+      Validate.showError('identifier', 'Please enter your email or username.'); valid = false;
+    }
+    if (!Validate.notEmpty(password)) {
+      Validate.showError('password', 'Please enter your password.'); valid = false;
+    }
+    if (!valid) return;
+
+    const btn = document.getElementById('loginBtn');
+    btn.textContent = 'Signing in…'; btn.disabled = true;
+
+    setTimeout(() => {
+      const result = Auth.login(identifier, password, remember);
+      if (result.success) {
+        Toast.show('Welcome back, ' + result.user.firstName + '!', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
+      } else {
+        Validate.showError('password', result.message);
+        btn.textContent = 'Sign In'; btn.disabled = false;
+      }
+    }, 600);
+  });
+
+  // Real-time clear errors
+  ['identifier','password'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => Validate.clearError(id));
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glossary — DAYE Trading</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.glossary-hero { background:var(--bg-dark); border-bottom:1px solid var(--border); padding:2.5rem 2rem; text-align:center; }
+.search-wrap { max-width:480px; margin:1.5rem auto 0; position:relative; }
+.search-wrap input { padding-left:40px; }
+.search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-muted); }
+.glossary-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+.gloss-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem; transition:border-color 0.2s; }
+.gloss-card:hover { border-color:var(--border-bright); }
+.gloss-term { font-family:'Rajdhani',sans-serif; font-size:1.1rem; font-weight:700; color:var(--purple-light); margin-bottom:0.5rem; }
+.gloss-def  { font-size:13px; color:var(--text-secondary); line-height:1.65; }
+.alpha-nav  { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.5rem; }
+.alpha-btn  { background:var(--bg-card); border:1px solid var(--border); color:var(--text-muted); width:32px; height:32px; border-radius:6px; font-size:13px; cursor:pointer; transition:all 0.2s; display:flex;align-items:center;justify-content:center; }
+.alpha-btn:hover,.alpha-btn.active { background:var(--purple-faint); border-color:var(--border-bright); color:var(--purple-light); }
+#noResults { display:none; text-align:center; padding:2rem; color:var(--text-muted); }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><div class="logo-mark">DT</div><span class="logo-text"><span>DAYE</span> Trading</span></a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="curriculum.html">Curriculum</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="glossary.html" class="active">Glossary</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="account.html">Account</a></li>
+    <li><a href="#" id="logoutBtn" style="color:var(--danger);">Logout</a></li>
+  </ul>
+  <div class="nav-actions"><button class="theme-toggle" id="themeToggle">☀️</button></div>
+</nav>
+
+<div class="glossary-hero">
+  <p class="section-eyebrow">Trading vocabulary</p>
+  <h1>Trading Glossary 📖</h1>
+  <p style="color:var(--text-secondary);margin-top:0.5rem;">Beginner-friendly definitions for every term you'll encounter.</p>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="form-input" type="text" id="glossSearch" placeholder="Search terms…"/>
+  </div>
+</div>
+
+<div class="section">
+  <div class="alpha-nav" id="alphNav"></div>
+  <div class="glossary-grid" id="glossGrid"></div>
+  <div id="noResults"><p>No terms found. Try a different search.</p></div>
+</div>
+
+<footer><p>© 2026 DAYE Trading. Educational purposes only.</p></footer>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  let filter = '';
+  let alphaFilter = '';
+
+  function render() {
+    const grid = document.getElementById('glossGrid');
+    const noRes = document.getElementById('noResults');
+    const q = filter.toLowerCase();
+    const filtered = GLOSSARY.filter(g => {
+      const matchQ = !q || g.term.toLowerCase().includes(q) || g.def.toLowerCase().includes(q);
+      const matchA = !alphaFilter || g.term.toUpperCase().startsWith(alphaFilter);
+      return matchQ && matchA;
+    });
+    if (filtered.length === 0) { grid.innerHTML=''; noRes.style.display='block'; return; }
+    noRes.style.display='none';
+    grid.innerHTML = filtered.map(g => `
+      <div class="gloss-card">
+        <div class="gloss-term">${g.term}</div>
+        <div class="gloss-def">${g.def}</div>
+      </div>`).join('');
+  }
+
+  // Alpha nav
+  const letters = [...new Set(GLOSSARY.map(g => g.term[0].toUpperCase()))].sort();
+  const nav = document.getElementById('alphNav');
+  const allBtn = document.createElement('button');
+  allBtn.className = 'alpha-btn active'; allBtn.textContent = 'All';
+  allBtn.addEventListener('click', () => { alphaFilter=''; document.querySelectorAll('.alpha-btn').forEach(b=>b.classList.remove('active')); allBtn.classList.add('active'); render(); });
+  nav.appendChild(allBtn);
+  letters.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className='alpha-btn'; btn.textContent=l;
+    btn.addEventListener('click', function() { alphaFilter=l; document.querySelectorAll('.alpha-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); render(); });
+    nav.appendChild(btn);
+  });
+
+  document.getElementById('glossSearch').addEventListener('input', e => { filter=e.target.value; render(); });
+  render();
+});
+</script>
+</body>
+</html>
